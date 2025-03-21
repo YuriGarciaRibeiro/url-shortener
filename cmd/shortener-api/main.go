@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/app/model"
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/app/service"
@@ -10,8 +11,8 @@ import (
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/storage/postgres"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	gormpostgres "gorm.io/driver/postgres" // Alias para evitar conflito de nomes
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 	defer logger.Sync()
 
 	// Conexão com o PostgreSQL (corrigido com alias)
-	dsn := "host=localhost user=postgres password=postgres dbname=url_shortener port=5432 sslmode=disable"
+	dsn := os.Getenv("DB_DSN") // Lê do ambiente
 	db, err := gorm.Open(gormpostgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
@@ -33,6 +34,7 @@ func main() {
 	if err := db.AutoMigrate(&model.Url{}); err != nil {
 		logger.Fatal("Failed to migrate database", zap.Error(err))
 	}
+	
 
 	// Inicializa as dependências
 	urlRepo := postgres.NewURLRepository(db)
