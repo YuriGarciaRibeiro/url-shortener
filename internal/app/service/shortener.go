@@ -1,6 +1,8 @@
 package service
 
 import (
+	"crypto/md5"
+
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/app/model"
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/storage/postgres"
 )
@@ -39,6 +41,7 @@ func (s *ShortenerService) IncrementClicks(hash string) error {
 
 // Função para gerar hash (exemplo simples)
 func generateHash(input string) string {
-	// Implemente uma lógica de hashing (ex: base62, MD5, etc.)
-	return "abc123" // Exemplo simplificado
+	md5Hash := md5.New()
+	md5Hash.Write([]byte(input))
+	return string(md5Hash.Sum(nil))
 }
