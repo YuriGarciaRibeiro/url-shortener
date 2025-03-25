@@ -1,7 +1,7 @@
 package service
 
 import (
-	"crypto/md5"
+	"encoding/base64"
 
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/app/model"
 	"github.com/YuriGarciaRibeiro/url-shortener/internal/storage/postgres"
@@ -39,9 +39,13 @@ func (s *ShortenerService) IncrementClicks(hash string) error {
 	return s.repo.IncrementClicks(hash)
 }
 
+func (s *ShortenerService) GetAll() ([]model.Url, error) {
+	return s.repo.GetAll()
+}
+
 // Função para gerar hash (exemplo simples)
 func generateHash(input string) string {
-	md5Hash := md5.New()
-	md5Hash.Write([]byte(input))
-	return string(md5Hash.Sum(nil))
+	base64Input := base64.StdEncoding.EncodeToString([]byte(input))
+	base64Input = base64.URLEncoding.EncodeToString([]byte(base64Input))
+	return base64Input[:8]
 }

@@ -25,9 +25,11 @@ func (h *URLHandler) ShortenURL(c *gin.Context) {
 		return
 	}
 
+	
+
 	url, err := h.service.Shorten(request.URL)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to shorten URL"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -46,6 +48,17 @@ func (h *URLHandler) RedirectURL(c *gin.Context) {
 	}
 
 	c.Redirect(http.StatusMovedPermanently, url.OriginalURL)
+	h.service.IncrementClicks(hash)
+}
+
+func (h *URLHandler) GetAll(c *gin.Context) {
+	urls, err := h.service.GetAll()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, urls)
 }
 
 func RegisterURLRoutes(r *gin.Engine, service *service.ShortenerService) {
@@ -53,6 +66,7 @@ func RegisterURLRoutes(r *gin.Engine, service *service.ShortenerService) {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/shorten", handler.ShortenURL)
+		api.GET("/urls", handler.GetAll)
 	}
 
 	r.GET("/:hash", handler.RedirectURL)

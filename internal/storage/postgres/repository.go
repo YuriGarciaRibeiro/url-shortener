@@ -29,3 +29,9 @@ func (r *URLRepository) FindByHash(hash string) (*model.Url, error) {
 func (r *URLRepository) IncrementClicks(hash string) error {
 	return r.db.Model(&model.Url{}).Where("hash = ?", hash).Update("clicks", gorm.Expr("clicks + 1")).Error
 }
+
+func (r *URLRepository) GetAll() ([]model.Url, error) {
+	var urls []model.Url
+	err := r.db.Find(&urls).Error
+	return urls, err
+}
