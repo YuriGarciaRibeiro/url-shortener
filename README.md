@@ -10,6 +10,7 @@ A modern and efficient URL shortening service built with Go, using Gin Framework
 - ✅ Automatic redirection
 - ✅ Click counting
 - ✅ RESTful API
+- ✅ Swagger API documentation
 - ✅ Structured logging with Zap
 - ✅ Containerized with Docker
 - ✅ PostgreSQL database
@@ -22,6 +23,7 @@ A modern and efficient URL shortening service built with Go, using Gin Framework
 - **GORM** - ORM for Go
 - **PostgreSQL** - Database
 - **Zap** - Structured logger
+- **Swagger** - API documentation
 - **Docker & Docker Compose** - Containerization
 
 ## 📁 Project Structure
@@ -31,6 +33,10 @@ url-shortener/
 ├── cmd/
 │   └── shortener-api/
 │       └── main.go              # Application entry point
+├── docs/                        # Swagger documentation
+│   ├── docs.go                  # Generated swagger docs
+│   ├── swagger.json             # OpenAPI JSON specification
+│   └── swagger.yaml             # OpenAPI YAML specification
 ├── internal/
 │   ├── app/
 │   │   ├── model/
@@ -74,6 +80,13 @@ docker-compose up --build
 
 The application will be available at `http://localhost:8080`
 
+### 📚 API Documentation
+
+The API documentation is available via Swagger UI at:
+- **Swagger UI**: `http://localhost:8080/swagger/index.html`
+- **OpenAPI JSON**: `http://localhost:8080/swagger/doc.json`
+- **OpenAPI YAML**: Available in `docs/swagger.yaml`
+
 ### Running Locally
 
 1. Clone the repository:
@@ -98,6 +111,8 @@ go run cmd/shortener-api/main.go
 ```
 
 ## 📋 API Endpoints
+
+> 💡 **Tip**: For complete API documentation with interactive examples, visit the Swagger UI at `http://localhost:8080/swagger/index.html` when the application is running.
 
 ### Health Check
 ```http

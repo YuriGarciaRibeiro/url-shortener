@@ -1,0 +1,105 @@
+basePath: /api/v1
+definitions:
+  handlers.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handlers.ShortenURLRequest:
+    properties:
+      url:
+        type: string
+    required:
+    - url
+    type: object
+  handlers.ShortenURLResponse:
+    properties:
+      hash:
+        type: string
+      short_url:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: yuri@example.com
+    name: Yuri Garcia Ribeiro
+    url: https://github.com/YuriGarciaRibeiro
+  description: A simple and efficient URL shortener built with Go and Gin.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://github.com/YuriGarciaRibeiro/url-shortener
+  title: URL Shortener API
+  version: "1.0"
+paths:
+  /{hash}:
+    get:
+      description: Redirects a hash to the original URL
+      parameters:
+      - description: Shortened URL hash
+        in: path
+        name: hash
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "301":
+          description: Moved Permanently
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Redirect to original URL
+      tags:
+      - URLs
+  /api/v1/shorten:
+    post:
+      consumes:
+      - application/json
+      description: Shortens a given URL and returns the shortened version
+      parameters:
+      - description: URL to shorten
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ShortenURLRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ShortenURLResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Shorten a URL
+      tags:
+      - URLs
+  /api/v1/urls:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.ShortenURLResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Get all shortened URLs
+      tags:
+      - URLs
+swagger: "2.0"

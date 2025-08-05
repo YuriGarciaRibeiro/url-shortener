@@ -10,6 +10,7 @@ Um serviço de encurtamento de URLs moderno e eficiente construído em Go, utili
 - ✅ Redirecionamento automático
 - ✅ Contagem de cliques
 - ✅ API RESTful
+- ✅ Documentação da API com Swagger
 - ✅ Middleware de logging com Zap
 - ✅ Containerizado com Docker
 - ✅ Banco de dados PostgreSQL
@@ -22,6 +23,7 @@ Um serviço de encurtamento de URLs moderno e eficiente construído em Go, utili
 - **GORM** - ORM para Go
 - **PostgreSQL** - Banco de dados
 - **Zap** - Logger estruturado
+- **Swagger** - Documentação da API
 - **Docker & Docker Compose** - Containerização
 
 ## 📁 Estrutura do Projeto
@@ -31,6 +33,10 @@ url-shortener/
 ├── cmd/
 │   └── shortener-api/
 │       └── main.go              # Ponto de entrada da aplicação
+├── docs/                        # Documentação Swagger
+│   ├── docs.go                  # Documentação swagger gerada
+│   ├── swagger.json             # Especificação OpenAPI JSON
+│   └── swagger.yaml             # Especificação OpenAPI YAML
 ├── internal/
 │   ├── app/
 │   │   ├── model/
@@ -74,6 +80,13 @@ docker-compose up --build
 
 A aplicação estará disponível em `http://localhost:8080`
 
+### 📚 Documentação da API
+
+A documentação da API está disponível via Swagger UI em:
+- **Swagger UI**: `http://localhost:8080/swagger/index.html`
+- **OpenAPI JSON**: `http://localhost:8080/swagger/doc.json`
+- **OpenAPI YAML**: Disponível em `docs/swagger.yaml`
+
 ### Executando Localmente
 
 1. Clone o repositório:
@@ -98,6 +111,8 @@ go run cmd/shortener-api/main.go
 ```
 
 ## 📋 Endpoints da API
+
+> 💡 **Dica**: Para documentação completa da API com exemplos interativos, visite o Swagger UI em `http://localhost:8080/swagger/index.html` quando a aplicação estiver rodando.
 
 ### Health Check
 ```http
