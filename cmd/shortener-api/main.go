@@ -75,7 +75,7 @@ func main() {
 	handlers.RegisterURLRoutes(r, urlService)
 
 	// Swagger route
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = ""
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Start server
